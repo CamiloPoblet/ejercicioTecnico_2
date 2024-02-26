@@ -26,6 +26,9 @@ El archivo run.bat hara un build del proyecto con gradle y ejecutara el jar resu
 
 # Project Overview
 
+### Diagrama de la solucion 
+<img width="687" alt="image" src="https://github.com/CamiloPoblet/ejercicioTecnico_2/assets/154239304/81e4016a-2e67-4858-8f66-66de5072c0a0">
+
 ### Endpoints
 La API Cuenta con 3 endpoints fundamentales
 
