@@ -2,7 +2,7 @@
 
 Aplicacion Springboot para creacion, authenticacion y obtencion de informacion de usuario mediante mail.
 
-## Tabla de contenidoa
+## Tabla de contenidos
 
 - [Iniciando el Proyecto](#iniciando-el-proyecto)
 - [Project Overview](#project-overview)
