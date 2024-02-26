@@ -1,6 +1,6 @@
 package cl.camilo_poblete.ejercicio_tecnico;
 
-import cl.camilo_poblete.ejercicio_tecnico.controller.ApiResponse;
+import cl.camilo_poblete.ejercicio_tecnico.controller.ApiResponseObject;
 import cl.camilo_poblete.ejercicio_tecnico.controller.UserController;
 import cl.camilo_poblete.ejercicio_tecnico.dto.UserDto;
 import cl.camilo_poblete.ejercicio_tecnico.entity.User;
@@ -100,12 +100,12 @@ class EjercicioTecnicoApplicationTests {
 		ResponseEntity<?> response = userController.registerUser(userDto);
 
 		// Validation
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+		assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
 		verify(userService, times(1)).createUser(any(UserDto.class));
-		ApiResponse apiResponse = (ApiResponse) response.getBody();
-		assertNotNull(apiResponse);
-		assertFalse(apiResponse.getSuccess());
-		assertEquals("El correo ya está registrado", apiResponse.getMessage());
+		ApiResponseObject apiResponseObject = (ApiResponseObject) response.getBody();
+		assertNotNull(apiResponseObject);
+		assertFalse(apiResponseObject.getSuccess());
+		assertEquals("El correo ya está registrado", apiResponseObject.getMessage());
 	}
 
 }
