@@ -18,6 +18,8 @@ Debe iniciar una terminal en un equipo que cuente con git y clonar el repositori
 ```
 git clone https://github.com/CamiloPoblet/ejercicioTecnico_2.git
 ```
+En caso de no contar con git descagar todos los archivos del proyecto incluyendo la carpeta raiz donde se encuentra este archivo.
+
 ## Iniciar Proyecto
 Dentro del proyecto encontrara un archivo .bat llamado *"run.bat"* haga doble click sobre el arhivo .bat y la aplicacion se ejecutara automaticamente.
 El archivo run.bat hara un build del proyecto con gradle y ejecutara el jar resultante para verificar que la aplicacion se genero y ejecuto con exito puede ingresar a la ruta *"http://localhost:8080/swagger-ui/index.html"* donde tendra la documentacion generada a traves de Swagger con los distintos endpoints de la applicacion, en esta seccion tambien puede visualizar los distintos schemas utilizados por la api y probar los distintos endpoints con sus request de ejemplo
