@@ -6,6 +6,7 @@ import cl.camilo_poblete.ejercicio_tecnico.service.UserAlreadyExistsException;
 import cl.camilo_poblete.ejercicio_tecnico.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -47,20 +48,43 @@ public class UserController {
             description = "Registra un nuevo usuario en la aplicacion y obtiene un token para operar con la api",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Usuario creado con exito.",
-                            content = {@Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = User.class))}),
+                            content = {
+                                @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = User.class)
+                            )}),
                     @ApiResponse(responseCode = "400", description = "La contraseña no cumple con el formato deseado",
-                            content = {@Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ApiResponseObject.class))}),
+                            content = {
+                                @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiResponseObject.class),
+                                    examples= {
+                                            @ExampleObject(value = "{\"success\": false, \"message\": \"La contraseña no cumple con el formato\"}")}
+                            )}),
                     @ApiResponse(responseCode = "400", description = "El email no cumple con el formato deseado",
-                            content = {@Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ApiResponseObject.class))}),
+                            content = {
+                                @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiResponseObject.class),
+                                    examples= {
+                                            @ExampleObject(value = "{\"success\": false, \"message\": \"El email no cumple con el formato\"}")}
+                            )}),
                     @ApiResponse(responseCode = "409", description = "El correo ya esta registrado.",
-                            content = {@Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ApiResponseObject.class))}),
+                            content = {
+                                @Content(
+                                        mediaType = "application/json",
+                                        schema = @Schema(implementation = ApiResponseObject.class),
+                                        examples= {
+                                                @ExampleObject(value = "{\"success\": false, \"message\": \"El correo ya esta registrado\"}")}
+                            )}),
                     @ApiResponse(responseCode = "500", description = "Error al registrar al usuario.",
-                            content = {@Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ApiResponseObject.class))})
+                            content = {
+                                @Content(
+                                        mediaType = "application/json",
+                                        schema = @Schema(implementation = ApiResponseObject.class),
+                                        examples= {
+                                            @ExampleObject(value = "{\"success\": false, \"message\": \"Error al registrar el usuario\"}")}
+                            )})
             })
     @CrossOrigin
     @PostMapping("/register")
@@ -85,25 +109,44 @@ public class UserController {
             return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
         } catch (UserAlreadyExistsException e) {
             logger.error(e.toString());
-            return new ResponseEntity<>(new ApiResponseObject(false, "El correo ya está registrado"), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new ApiResponseObject(false, "El correo ya esta registrado"), HttpStatus.CONFLICT);
         } catch (Exception e) {
             logger.error(e.toString());
-            return new ResponseEntity<>(new ApiResponseObject(false, "Error al registrar el usuario Exception"+e), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ApiResponseObject(false, "Error al registrar el usuario"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Operation(summary = "Autentica a un usuario con su email y contraseña con el que fue creado",
             description = "Endpoint para autenticar a un usuario y obtener un token",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Usuario autenticado con exito.",
-                            content = {@Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = User.class))}),
-                    @ApiResponse(responseCode = "401", description = "Autenticacion fallida del usuario.",
-                            content = {@Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ApiResponseObject.class))}),
-                    @ApiResponse(responseCode = "500", description = "Error interno al autenticar el usuario.",
-                            content = {@Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ApiResponseObject.class))})
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Usuario autenticado con exito.",
+                            content = {
+                                @Content(
+                                            mediaType = "application/json",
+                                            schema = @Schema(implementation = JwtResponse.class)
+                            )}),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Autenticacion fallida del usuario.",
+                            content = {
+                                @Content(
+                                            mediaType = "application/json",
+                                            schema = @Schema(implementation = ApiResponseObject.class),
+                                            examples ={
+                                                    @ExampleObject(value = "{\"success\": false, \"message\": \"Autenticación fallida\"}")}
+                            )}),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Error interno al autenticar el usuario.",
+                            content = {
+                                @Content(
+                                            mediaType = "application/json",
+                                            schema = @Schema(implementation = ApiResponseObject.class),
+                                            examples ={
+                                            @ExampleObject(value = "{\"success\": false, \"message\": \"Error interno al autenticar el usuario\"}")}
+                            )})
             })
     @CrossOrigin
     @PostMapping("/auth")
@@ -117,7 +160,7 @@ public class UserController {
             return new ResponseEntity<>(new ApiResponseObject(false, "Autenticación fallida"), HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             logger.error("Error interno: " + e.getMessage());
-            return new ResponseEntity<>(new ApiResponseObject(false, "Error interno del servidor"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ApiResponseObject(false, "Error interno al autenticar el usuario"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -129,11 +172,21 @@ public class UserController {
                             content = {@Content(mediaType = "application/json",
                                     schema = @Schema(implementation = User.class))}),
                     @ApiResponse(responseCode = "404", description = "Usuario NO Encontrado.",
-                            content = {@Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ApiResponseObject.class))}),
+                            content = {
+                                @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiResponseObject.class),
+                                    examples ={
+                                            @ExampleObject(value = "{\"success\": false, \"message\": \"usuario no encontrado\"}")}
+                            )}),
                     @ApiResponse(responseCode = "500", description = "Error interno al buscar al usuario.",
-                            content = {@Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ApiResponseObject.class))})
+                            content = {
+                                @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiResponseObject.class),
+                                    examples = {
+                                            @ExampleObject(value = "{\"success\": false, \"message\": \"Error al buscar el usuario\"}")}
+                            )})
             })
     @GetMapping("/search")
     public ResponseEntity<?> findUserByEmail(@RequestParam("email") String email) {

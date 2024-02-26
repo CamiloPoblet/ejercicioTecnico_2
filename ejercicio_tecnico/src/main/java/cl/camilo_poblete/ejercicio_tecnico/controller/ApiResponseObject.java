@@ -1,6 +1,7 @@
 package cl.camilo_poblete.ejercicio_tecnico.controller;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,9 +9,12 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
+@Schema(description = "Objeto que representa la respuesta de la API")
 public class ApiResponseObject {
-    //resultado de la peticion
+
+    @Schema(description = "resultado de la peticion",example="false")
     private Boolean success;
-    //mensaje de respuesta
+
+    @Schema(description = "mensaje de respuesta",example="peticion fallida")
     private String message;
 }
