@@ -32,13 +32,13 @@ El archivo run.bat hara un build del proyecto con gradle y ejecutara el jar resu
 ### Endpoints
 La API Cuenta con 3 endpoints fundamentales
 
-#### /api/users/registry 
+#### " /api/users/registry "
 > Para la creacion de usuariios nuevos y la devolucion de un token para el usuario creado, el token generado tiene una validez de 24hrs
 
-#### /api/users/auth
+#### " /api/users/auth "
 > Para la autenticacion de usuariios ya existentes y la devolucion de un token para el usuario autentica, el token generado tiene una validez de 24hrs
 
-### /api/users/search
+#### " /api/users/search "
 > Para la busqueda de los datos de un usuario ya existente a traves del email registrado, este endpoint esta segurizado por lo cual sera necesario que haga uso de un token generado por cualquier de los endpoints anteriormente nombrados.
 
 # Prerequisitos
